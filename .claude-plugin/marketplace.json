@@ -1,0 +1,21 @@
+{
+  "name": "team-feature-flow",
+  "description": "Team plugins for the ticket-to-pull-request feature workflow.",
+  "owner": {
+    "name": "Claude automation PoC team"
+  },
+  "plugins": [
+    {
+      "name": "feature-flow",
+      "description": "Ticket to pull request with Claude Code: /feature-flow:onboard-project sets up a repository, /feature-flow:build-feature <KEY> builds one ticket.",
+      "source": "./plugins/feature-flow",
+      "category": "development"
+    },
+    {
+      "name": "archify",
+      "description": "Reviewed, pinned copy of Archify 3.3.0 (tt-a1i/archify @ 3ca198d). Local interactive diagrams used by feature-flow.",
+      "source": "./plugins/archify",
+      "category": "development"
+    }
+  ]
+}

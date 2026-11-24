@@ -1,0 +1,11 @@
+{
+  "name": "archify",
+  "description": "Reviewed, pinned copy of Archify 3.3.0 (tt-a1i/archify @ 3ca198d) for interactive architecture and feature diagrams. Runs locally; used by feature-flow for design and project diagrams.",
+  "version": "3.3.0",
+  "author": {
+    "name": "tt-a1i (packaged by the Claude automation PoC team)"
+  },
+  "homepage": "https://github.com/tt-a1i/archify",
+  "license": "Apache-2.0",
+  "keywords": ["diagrams", "architecture", "archify"]
+}

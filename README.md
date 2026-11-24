@@ -84,7 +84,7 @@ Profile commands must work in PowerShell, cmd and bash, because the same
 
 ## Install (Windows, macOS, Linux)
 
-The marketplace is the private GitHub repository
+The marketplace is the public GitHub repository
 [`vipin4771234/claude-feature-flow`](https://github.com/vipin4771234/claude-feature-flow).
 
 ### 1. Prerequisites on the machine
@@ -97,8 +97,8 @@ The marketplace is the private GitHub repository
 | Node.js 18+                                                | Archify (projects may need newer, e.g. Node 24) | [nodejs.org](https://nodejs.org) or `winget install OpenJS.NodeJS.LTS` | Homebrew or nvm                      | nvm or package manager                   |
 | Chrome, Chromium or Edge                                   | Archify's browser check                         | Edge is already there                                                  | Chrome                               | `chromium` / `google-chrome`             |
 
-Then sign in to GitHub with an account that can read this repository and push
-branches to the project:
+Installing the plugins needs no GitHub account. For the feature workflow itself,
+sign in to GitHub with an account that can push branches to your project:
 
 ```bash
 gh auth login
@@ -108,8 +108,7 @@ gh auth login
 gh auth setup-git
 ```
 
-The second command lets `git` (and so Claude Code's plugin installer) use the
-same sign-in for this private repository.
+The second command lets `git` use the same sign-in when it pushes branches.
 
 ### 2. Add the marketplace and install the plugins
 
@@ -161,12 +160,12 @@ to `~/.claude/CLAUDE.md` (Windows: `%USERPROFILE%\.claude\CLAUDE.md`).
 
 ### Troubleshooting
 
-| Problem                                                                  | Fix                                                                                                                            |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Marketplace add fails with "repository not found" or asks for a password | `gh auth login` then `gh auth setup-git`; make sure your GitHub account can see the repository                                 |
-| Archify "browser check" cannot find a browser                            | Set `ARCHIFY_CHROME` to the browser's full path. In a Linux container without a sandbox also set `ARCHIFY_CHROME_NO_SANDBOX=1` |
-| `scripts/build-diagrams.mjs` says Archify not found                      | Install the archify plugin, or set `ARCHIFY_BIN` to `.../skills/archify/bin/archify.mjs`                                       |
-| Setting a variable for one command                                       | bash: `VAR=1 command`; PowerShell: `$env:VAR='1'; command`; cmd: `set VAR=1 && command`                                        |
+| Problem                                             | Fix                                                                                                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Marketplace add fails                               | Check the name: `vipin4771234/claude-feature-flow`, and that the machine can reach github.com                                  |
+| Archify "browser check" cannot find a browser       | Set `ARCHIFY_CHROME` to the browser's full path. In a Linux container without a sandbox also set `ARCHIFY_CHROME_NO_SANDBOX=1` |
+| `scripts/build-diagrams.mjs` says Archify not found | Install the archify plugin, or set `ARCHIFY_BIN` to `.../skills/archify/bin/archify.mjs`                                       |
+| Setting a variable for one command                  | bash: `VAR=1 command`; PowerShell: `$env:VAR='1'; command`; cmd: `set VAR=1 && command`                                        |
 
 ## Before using it on another project
 
@@ -178,8 +177,15 @@ to `~/.claude/CLAUDE.md` (Windows: `%USERPROFILE%\.claude\CLAUDE.md`).
 ## Roadmap
 
 1. ~~Prove it on a first project with `/feature-flow:build-feature`.~~ Done.
-2. ~~Publish to a team Git repository.~~ Done (private GitHub repository).
+2. ~~Publish to a team Git repository.~~ Done (public GitHub repository).
 3. Try it on a Windows and a Linux machine.
 4. Pilot on a second project with a different stack.
 5. Add it to the organisation's plugin catalog.
 6. Headless runs triggered from Jira (label or assignment) with an API key and bot account.
+
+## Contributing
+
+`main` is protected: nobody, including the owner, can push to it directly. To
+change the plugins, fork the repository (or push a branch if you have write
+access), and open a pull request. The owner reviews and merges it. Bump
+`version` in the changed plugin's `plugin.json` so installs pick up the update.

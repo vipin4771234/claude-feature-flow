@@ -1,0 +1,88 @@
+{
+  "project": "My app",
+  "tracker": { "site": "example.atlassian.net", "project": "APP" },
+  "columns": {
+    "ui": "UI page",
+    "api": "API endpoint",
+    "data": "Database table"
+  },
+  "groups": [
+    { "id": "core", "label": "Core features" },
+    { "id": "foundation", "label": "Foundation", "map": false }
+  ],
+  "mapNote": "Names of endpoints and tables for unticketed features are proposals",
+  "features": [
+    {
+      "id": "create-order",
+      "name": "Create order",
+      "group": "core",
+      "ticket": "APP-12",
+      "ticketStatus": "Done",
+      "summary": "Checkout form saves an order through POST /api/orders.",
+      "sources": [
+        {
+          "path": "web/src/orders/CheckoutForm.tsx",
+          "symbol": "handleSubmit",
+          "label": "form submit"
+        },
+        { "path": "api/src/orders/orders.service.ts", "symbol": "createOrder" }
+      ],
+      "ui": {
+        "label": "Checkout form",
+        "note": "Checkout page",
+        "sources": [
+          {
+            "path": "web/src/orders/CheckoutForm.tsx",
+            "symbol": "CheckoutForm"
+          }
+        ]
+      },
+      "api": {
+        "label": "POST /api/orders",
+        "note": "validate + save",
+        "sources": [
+          {
+            "path": "api/src/orders/orders.routes.ts",
+            "find": "router.post('/'"
+          }
+        ]
+      },
+      "data": {
+        "label": "orders",
+        "note": "insert",
+        "sources": [
+          { "path": "api/src/orders/order.model.ts", "symbol": "Order" }
+        ]
+      }
+    },
+    {
+      "id": "refund-order",
+      "name": "Refund an order",
+      "group": "core",
+      "ticket": "APP-15",
+      "ticketStatus": "In Progress",
+      "summary": "Not built yet: the Refund button is hidden and there is no refund route.",
+      "ui": { "label": "Refund dialog", "note": "not built" },
+      "api": { "label": "POST /api/orders/:id/refund", "note": "not built" },
+      "data": { "label": "orders", "note": "exists · update", "built": true }
+    },
+    {
+      "id": "reports",
+      "name": "Reports",
+      "group": "core",
+      "planned": true,
+      "summary": "Planned: monthly sales report. No ticket yet.",
+      "ui": { "label": "Reports page", "note": "proposed" },
+      "api": { "label": "GET /api/reports", "note": "proposed" },
+      "data": { "label": "orders", "note": "read", "built": true }
+    },
+    {
+      "id": "api-health",
+      "name": "API + health check",
+      "group": "foundation",
+      "built": true,
+      "summary": "Server with GET /health. Project setup, no ticket.",
+      "sources": [{ "path": "api/src/app.ts", "find": "app.get('/health'" }]
+    }
+  ]
+}

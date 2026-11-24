@@ -5,7 +5,7 @@ review: design, branch, build, tests, manual check in the running app, diagrams,
 pull request and ticket update. It is the reusable version of the process proven
 on a proof-of-concept project (a Node.js + React task manager).
 
-> Status: **draft 0.3.0**. Proven end to end on one Node.js + React project; not yet tested on a second project.
+> Status: **draft 0.4.0**. Proven end to end on one Node.js + React project; not yet tested on a second project.
 
 ## What is in it
 
@@ -17,8 +17,8 @@ on a proof-of-concept project (a Node.js + React task manager).
 
 Templates in `plugins/feature-flow/skills/build-feature/templates/`: ticket,
 pull request body, ticket comment, run log. `onboard-project/templates/build-diagrams.mjs`
-is copied into each project to rebuild diagrams on any OS and to write
-`flowdiagram.html`, one self-contained page with a menu of every diagram.
+is copied into each project to build all diagrams on any OS into
+`flowdiagram.html`.
 
 Both feature-flow skills only run when a person types the command (`disable-model-invocation`).
 
@@ -27,6 +27,23 @@ Both feature-flow skills only run when a person types the command (`disable-mode
 `onboard-project` creates three baseline diagrams for a project (architecture,
 feature status, feature map), and `build-feature` draws a design diagram for each
 ticket and updates the baseline ones in the same pull request.
+
+Everything ends up in **one file people open, `flowdiagram.html`**: a
+self-contained page with a searchable menu (project diagrams, then one design
+per ticket with a link to the ticket). Behind it are a few small sources:
+
+| Source              | What it is                                                                                                                                                                                                                                                       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `features.json`     | The list of features with their ticket, status and code. Generates the **feature status** and **feature map** diagrams, colours and counts included. See [`features.example.json`](plugins/feature-flow/skills/onboard-project/templates/features.example.json). |
+| `architecture.json` | The system architecture (an Archify diagram).                                                                                                                                                                                                                    |
+| `<KEY>-design.json` | One design per ticket. `--new-design <KEY>` starts one from the branch's changed files.                                                                                                                                                                          |
+
+Citations follow the code: a source can name a function, class, const or test
+block (`"symbol": "createTask"`) or a line of text (`"find": "app.get('/health'"`),
+and the build turns it into line ranges at the pinned commit. Diagrams pinned to
+`"HEAD"` follow the latest commit that changed the files they cite, so rebuilding
+without code changes gives an identical page (`--check` verifies this, for CI).
+The separate Archify `.html` files and receipts stay in a temporary cache.
 
 Archify runs **entirely on the developer's machine**: it builds standalone HTML,
 checks cited source lines against the local Git repository and renders the page
@@ -73,7 +90,7 @@ Example profile (a Node.js + React app with MongoDB):
 - Build: `npm run build`
 - Format check: `npx prettier --check docs frontend backend CLAUDE.md README.md`
 - Diagrams: docs/diagrams/ (Archify)
-- Diagrams build: `node scripts/build-diagrams.mjs [name ...]`
+- Diagrams build: `node scripts/build-diagrams.mjs --title "My app"`
 - Run logs: docs/runs/
 - Design approval: required
 - Known workarounds: if the test MongoDB download fails, point MONGOMS_SYSTEM_BINARY at a local mongod

@@ -5,7 +5,7 @@ review: design, branch, build, tests, manual check in the running app, diagrams,
 pull request and ticket update. It is the reusable version of the process proven
 on the TaskFlow PoC ([SCRUM-14 run log](https://github.com/arymangupta99-wq/claudeautomationpoc/blob/main/docs/poc/runs/SCRUM-14.md)).
 
-> Status: **draft 0.2.0**. Proven on TaskFlow (SCRUM-6); not yet tested on a second project.
+> Status: **draft 0.3.0**. Proven on TaskFlow (SCRUM-6); not yet tested on a second project.
 
 ## What is in it
 
@@ -17,7 +17,8 @@ on the TaskFlow PoC ([SCRUM-14 run log](https://github.com/arymangupta99-wq/clau
 
 Templates in `plugins/feature-flow/skills/build-feature/templates/`: ticket,
 pull request body, ticket comment, run log. `onboard-project/templates/build-diagrams.mjs`
-is copied into each project to rebuild diagrams on any OS.
+is copied into each project to rebuild diagrams on any OS and to write
+`flowdiagram.html`, one self-contained page with a menu of every diagram.
 
 Both feature-flow skills only run when a person types the command (`disable-model-invocation`).
 

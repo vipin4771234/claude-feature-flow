@@ -85,12 +85,16 @@ Copy [`templates/build-diagrams.mjs`](templates/build-diagrams.mjs) to
 `scripts/build-diagrams.mjs` in the repository (unless the project already has a
 diagram build command). It finds the installed archify plugin on any OS, turns
 off the update check and clears old receipts, so nobody needs a shell-specific
-command or a machine-specific path.
+command or a machine-specific path. It also writes `flowdiagram.html`: one
+self-contained page with a menu of every diagram (project diagrams first, then
+one design per ticket), which people can open offline or attach to a ticket.
+Pass `--title <project name>` for its heading, for example through a
+`diagrams` script in the project's package manager.
 
 Pin each to the current base-branch commit, rebuild with
 `node scripts/build-diagrams.mjs`, look at each one, and add them with their
-`.json` sources and a short `README.md` (how to rebuild: the same command) to the
-diagrams folder. Add the receipt patterns to `.gitignore`.
+`.json` sources, `flowdiagram.html` and a short `README.md` (open
+`flowdiagram.html`; how to rebuild: the same command) to the diagrams folder. Add the receipt patterns to `.gitignore`.
 
 If the archify plugin is not installed, skip this step and list it as missing.
 

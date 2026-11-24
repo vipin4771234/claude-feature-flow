@@ -82,9 +82,12 @@ affects, in this same branch (see "Diagrams with Archify" below):
 - `feature-status` and `feature-map`: the feature becomes built (green) with its
   ticket key; fix the legend counts.
 - the design diagram from step 2: keep it as the record of what changed.
+- `flowdiagram.html`, the single page with a menu of all diagrams: the
+  `Diagrams build` command regenerates it; commit it with the others.
 
 Pin each diagram's `meta.repository.revision` to a pushed commit on this branch
-that contains every cited line, rebuild, then open each HTML file and look at it.
+that contains every cited line, rebuild, then open `flowdiagram.html` and look at
+each diagram in its menu.
 If a baseline diagram is missing, say so and suggest running
 `/feature-flow:onboard-project` rather than inventing one from scratch.
 

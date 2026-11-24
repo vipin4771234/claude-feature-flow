@@ -56,7 +56,7 @@ Add or update this section in `CLAUDE.md`, keeping everything else in the file:
 - Build: <command>
 - Format check: <command>
 - Diagrams: <folder, e.g. docs/diagrams/ (Archify)>, or "none"
-- Diagrams build: `node scripts/build-diagrams.mjs [name ...]`
+- Diagrams build: `node scripts/build-diagrams.mjs --title <project>` (writes flowdiagram.html; `--check` to verify)
 - Run logs: <folder, e.g. docs/runs/>
 - Design approval: required
 - Known workarounds: <list, or "none">
@@ -71,7 +71,12 @@ the same PR; never merge without a person.
 Unless the user chooses `Diagrams: none`, create the three diagrams that
 `/feature-flow:build-feature` keeps up to date, using the **archify** plugin and
 the "Diagrams with Archify" rules in the build-feature skill (local only, update
-check off, no receipts committed):
+check off, no receipts committed). Only two source files are written by hand:
+`features.json` (from
+[`templates/features.example.json`](templates/features.example.json); it
+generates `feature-status` and `feature-map`) and `architecture.json`, both
+citing code by name (`"symbol"` or `"find"`), with
+`meta.repository.revision: "HEAD"`:
 
 | Diagram          | Type               | Shows                                                                                                                           |
 | ---------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -91,10 +96,12 @@ one design per ticket), which people can open offline or attach to a ticket.
 Pass `--title <project name>` for its heading, for example through a
 `diagrams` script in the project's package manager.
 
-Pin each to the current base-branch commit, rebuild with
-`node scripts/build-diagrams.mjs`, look at each one, and add them with their
-`.json` sources, `flowdiagram.html` and a short `README.md` (open
-`flowdiagram.html`; how to rebuild: the same command) to the diagrams folder. Add the receipt patterns to `.gitignore`.
+Build with `node scripts/build-diagrams.mjs`, open `flowdiagram.html` and look
+at each diagram, then add `features.json`, `architecture.json`,
+`flowdiagram.html` and a short `README.md` (open `flowdiagram.html`; edit
+`features.json`; rebuild with the same command) to the diagrams folder. The
+separate diagram `.html` files and receipts stay in a temporary cache, so
+nothing else is committed.
 
 If the archify plugin is not installed, skip this step and list it as missing.
 

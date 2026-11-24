@@ -1,7 +1,7 @@
 {
   "name": "feature-flow",
   "description": "Take a tracker ticket through design, branch, build, tests, manual check, diagrams, pull request and ticket update with Claude Code, driven by a per-project Automation profile in CLAUDE.md.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": {
     "name": "Claude automation PoC team"
   },

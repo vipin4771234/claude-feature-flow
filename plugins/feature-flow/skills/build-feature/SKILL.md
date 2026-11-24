@@ -44,9 +44,11 @@ requirements and **numbered, testable acceptance criteria** (see
 Read the code the ticket touches. Present a short design: new parts, changed
 parts, unchanged parts, API contract, data model, and how each acceptance
 criterion will be checked. Unless the profile says `Diagrams: none`, draw it as a
-design diagram `<diagrams folder>/<KEY>-design.html`, marking new parts
-`change: "added"` and changed parts `change: "modified"` (see "Diagrams with
-Archify" below). Wait for the user's OK on the design before writing code, unless
+design diagram `<diagrams folder>/<KEY>-design.json` (start it with the
+`Diagrams build` command's `--new-design <KEY>` option, or write it by hand),
+marking new parts `change: "added"` and changed parts `change: "modified"`, and
+cite existing code by name (see "Diagrams with Archify" below). Build and show it
+from `flowdiagram.html`. Wait for the user's OK on the design before writing code, unless
 the profile says `Design approval: skip`.
 
 ## 3. Branch
@@ -78,16 +80,22 @@ or **not checked** (say why). Never claim a check that did not run.
 Unless the profile says `Diagrams: none`, update every diagram the feature
 affects, in this same branch (see "Diagrams with Archify" below):
 
-- `architecture`: add the new components, routes and data stores.
-- `feature-status` and `feature-map`: the feature becomes built (green) with its
-  ticket key; fix the legend counts.
-- the design diagram from step 2: keep it as the record of what changed.
-- `flowdiagram.html`, the single page with a menu of all diagrams: the
-  `Diagrams build` command regenerates it; commit it with the others.
+- `features.json`: set the feature's `"built": true` (it turns green) and point
+  its `sources` and its `ui`/`api`/`data` parts at the new code by name. Refresh
+  `ticketStatus` for every feature that has a ticket from the tracker (one
+  search for all their keys). The `feature-status` and `feature-map` diagrams and
+  their counts are generated from this file; never edit them by hand.
+- `architecture.json`: add the new components, routes and data stores.
+- the design diagram from step 2: compare it with the real change
+  (`git diff --name-status <base>...HEAD`), fix it, and pin its
+  `meta.repository.revision` to the branch's last code commit (a full SHA) so it
+  stays a record of this change.
 
-Pin each diagram's `meta.repository.revision` to a pushed commit on this branch
-that contains every cited line, rebuild, then open `flowdiagram.html` and look at
-each diagram in its menu.
+Commit the code first, then run the `Diagrams build` command once: it pins the
+other diagrams to the latest commit that touched the files they cite, turns
+names into line ranges and writes `flowdiagram.html`. Commit the `.json` files
+and `flowdiagram.html`, then open `flowdiagram.html` and look at each diagram in
+its menu.
 If a baseline diagram is missing, say so and suggest running
 `/feature-flow:onboard-project` rather than inventing one from scratch.
 
@@ -113,7 +121,8 @@ verified.
 
 Move the ticket to Done and add the run log from
 [`templates/run-log.md`](templates/run-log.md) to the profile's run-logs folder,
-in a small docs PR.
+in a small docs PR. In the same PR set the feature's `ticketStatus` to `Done` in
+`features.json` and run the `Diagrams build` command.
 
 ## Diagrams with Archify
 
@@ -126,20 +135,27 @@ instructions for authoring; in addition:
   so it makes no update check (the profile's `Diagrams build` script sets it for
   you). Never use Archify's PR features (`pr attach` and similar), which upload
   images to the Git host, unless the user asks for that specific PR.
-- **Source of truth.** Keep each diagram's `.json` source next to its `.html` in
-  the profile's diagrams folder, with `meta.output` set to the `.html` path and
-  `meta.repository` pinned to a commit. Rebuild from the repository root with
-  the profile's `Diagrams build` command, for example
-  `node scripts/build-diagrams.mjs architecture feature-status`. Without one, run
-  `node <archify skill base directory>/bin/archify.mjs finalize <type> <file>.json <file>.html --repo-root . --quality showcase`
-  with the update-check variable set in this shell's syntax.
-- **Pinning.** Citations are line ranges checked at the pinned commit. Commit
-  and push the code first, then pin the diagrams to that commit and fix any
-  citation whose lines moved. A component can cite at most 3 source ranges.
-- **Never commit receipts** (`*.finalize*.json`, `*.delivery.json`,
-  `*.browser-check.json`); they hold local paths. Make sure `.gitignore` covers
-  them. If a rebuild fails with `evidence-path-conflict`, delete the old receipts
-  next to the diagram and rebuild.
+- **One page, few sources.** The diagrams folder holds `flowdiagram.html` (the
+  only file people open), `features.json`, `architecture.json` and one
+  `<KEY>-design.json` per ticket. The separate Archify `.html` files and receipts
+  are built in a temporary cache and never committed. Build with the profile's
+  `Diagrams build` command (`node scripts/build-diagrams.mjs`); `--check` fails
+  if `flowdiagram.html` is out of date.
+- **`features.json`** lists every feature: `id`, `name`, `group`, `ticket`,
+  `ticketStatus` (copied from the tracker), `built`, `planned`, `summary`,
+  `sources`, and `ui`/`api`/`data` parts (`label`, `note`, `built`, `sources`).
+  A feature is green when `built` is true or its ticket is Done, amber when it
+  has a ticket, blue when `planned`, red otherwise. See
+  [`../onboard-project/templates/features.example.json`](../onboard-project/templates/features.example.json).
+- **Cite code by name.** In `sources`, prefer
+  `{ "path": "...", "symbol": "createTask" }` (functions, classes, consts,
+  methods, `describe("...")` blocks) or `{ "path": "...", "find": "text" }`
+  (first line containing it; add `"lines": n` for a fixed length). A path alone
+  cites a whole file or folder. Line numbers still work but drift. At most 3
+  sources per component; labels up to 48 characters.
+- **Pinning.** `meta.repository.revision: "HEAD"` (the default) pins to the
+  latest commit that changed the cited files, so commit code before building.
+  A full SHA keeps a diagram as a fixed record (designs of merged tickets).
 - **Drafts.** Archify's default `.archify/` working folder is scratch space. Copy
   finished diagrams into the diagrams folder; never share a `.archify/` path.
 - **No explainer pages** unless the user asks for one.

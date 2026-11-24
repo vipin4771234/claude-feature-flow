@@ -3,9 +3,9 @@
 A Claude Code plugin that takes one tracker ticket to a pull request ready for
 review: design, branch, build, tests, manual check in the running app, diagrams,
 pull request and ticket update. It is the reusable version of the process proven
-on the TaskFlow PoC ([SCRUM-14 run log](https://github.com/arymangupta99-wq/claudeautomationpoc/blob/main/docs/poc/runs/SCRUM-14.md)).
+on a proof-of-concept project (a Node.js + React task manager).
 
-> Status: **draft 0.3.0**. Proven on TaskFlow (SCRUM-6); not yet tested on a second project.
+> Status: **draft 0.3.0**. Proven end to end on one Node.js + React project; not yet tested on a second project.
 
 ## What is in it
 
@@ -58,14 +58,14 @@ Apache-2.0; its `LICENSE` and `NOTICE` are kept in `plugins/archify/`.
   section with the tracker key, repository, branch naming and the
   install/run/test/typecheck/build/format commands. `onboard-project` writes it.
 
-Example profile (TaskFlow):
+Example profile (a Node.js + React app with MongoDB):
 
 ```markdown
 ## Automation profile
 
-- Tracker: Jira, site claudeautomationpoc.atlassian.net, project SCRUM
-- Repository: github.com/arymangupta99-wq/claudeautomationpoc, base branch main
-- Branches: feature/SCRUM-<n>-<slug>, fix/SCRUM-<n>-<slug>, docs/<slug>
+- Tracker: Jira, site example.atlassian.net, project APP
+- Repository: github.com/your-org/your-repo, base branch main
+- Branches: feature/APP-<n>-<slug>, fix/APP-<n>-<slug>, docs/<slug>
 - Install: `npm ci`
 - Run: `npm run dev` (check at http://127.0.0.1:5173); needs: MongoDB and backend/.env
 - Test: `npm test`
@@ -74,7 +74,7 @@ Example profile (TaskFlow):
 - Format check: `npx prettier --check docs frontend backend CLAUDE.md README.md`
 - Diagrams: docs/diagrams/ (Archify)
 - Diagrams build: `node scripts/build-diagrams.mjs [name ...]`
-- Run logs: docs/poc/runs/
+- Run logs: docs/runs/
 - Design approval: required
 - Known workarounds: if the test MongoDB download fails, point MONGOMS_SYSTEM_BINARY at a local mongod
 ```
@@ -89,13 +89,13 @@ The marketplace is the private GitHub repository
 
 ### 1. Prerequisites on the machine
 
-| Tool                                                       | Why                                                       | Windows                                                                | macOS                                | Linux                                    |
-| ---------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------- |
-| [Claude Code](https://docs.claude.com/en/docs/claude-code) | runs the skills                                           | installer or `npm i -g @anthropic-ai/claude-code`                      | same                                 | same                                     |
-| Git                                                        | clone, branches                                           | [git-scm.com](https://git-scm.com)                                     | `xcode-select --install` or Homebrew | package manager                          |
-| GitHub CLI `gh`                                            | sign-in, pull requests                                    | `winget install GitHub.cli`                                            | `brew install gh`                    | [cli.github.com](https://cli.github.com) |
-| Node.js 18+                                                | Archify (projects may need newer, e.g. TaskFlow needs 24) | [nodejs.org](https://nodejs.org) or `winget install OpenJS.NodeJS.LTS` | Homebrew or nvm                      | nvm or package manager                   |
-| Chrome, Chromium or Edge                                   | Archify's browser check                                   | Edge is already there                                                  | Chrome                               | `chromium` / `google-chrome`             |
+| Tool                                                       | Why                                             | Windows                                                                | macOS                                | Linux                                    |
+| ---------------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------- |
+| [Claude Code](https://docs.claude.com/en/docs/claude-code) | runs the skills                                 | installer or `npm i -g @anthropic-ai/claude-code`                      | same                                 | same                                     |
+| Git                                                        | clone, branches                                 | [git-scm.com](https://git-scm.com)                                     | `xcode-select --install` or Homebrew | package manager                          |
+| GitHub CLI `gh`                                            | sign-in, pull requests                          | `winget install GitHub.cli`                                            | `brew install gh`                    | [cli.github.com](https://cli.github.com) |
+| Node.js 18+                                                | Archify (projects may need newer, e.g. Node 24) | [nodejs.org](https://nodejs.org) or `winget install OpenJS.NodeJS.LTS` | Homebrew or nvm                      | nvm or package manager                   |
+| Chrome, Chromium or Edge                                   | Archify's browser check                         | Edge is already there                                                  | Chrome                               | `chromium` / `google-chrome`             |
 
 Then sign in to GitHub with an account that can read this repository and push
 branches to the project:
@@ -177,7 +177,7 @@ to `~/.claude/CLAUDE.md` (Windows: `%USERPROFILE%\.claude\CLAUDE.md`).
 
 ## Roadmap
 
-1. ~~Prove it on TaskFlow: run SCRUM-6 (Delete) with `/feature-flow:build-feature`.~~ Done.
+1. ~~Prove it on a first project with `/feature-flow:build-feature`.~~ Done.
 2. ~~Publish to a team Git repository.~~ Done (private GitHub repository).
 3. Try it on a Windows and a Linux machine.
 4. Pilot on a second project with a different stack.

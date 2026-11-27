@@ -1,26 +1,45 @@
 # feature-flow
 
-A Claude Code plugin that takes one tracker ticket to a pull request ready for
-review: design, branch, build, tests, manual check in the running app, diagrams,
-pull request and ticket update. It is the reusable version of the process proven
-on a proof-of-concept project (a Node.js + React task manager).
+A Claude Code plugin that takes a feature from an idea to pull requests ready for
+review: a spec page in Confluence, Jira tickets from the approved spec, then for
+each ticket design, branch, build, tests, manual check in the running app,
+diagrams, pull request and ticket update. It is the reusable version of the
+process proven on a proof-of-concept project (a Node.js + React task manager).
 
-> Status: **draft 0.4.0**. Proven end to end on Node.js + React project;
+> Status: **draft 0.5.0**. Ticket-to-PR proven end to end on one Node.js + React
+> project; the spec and ticket steps are new.
+
+## The flow
+
+```
+feature request (doc, link, text)
+  → /feature-flow:write-spec      spec page in Confluence, Status: Draft
+  → people review, answer open questions, set Status: Approved
+  → /feature-flow:create-tickets  Jira epic + stories (one repository each)
+  → /feature-flow:build-feature   one story → one pull request, in that repository
+```
+
+Each repository is set up once with `/feature-flow:onboard-project`. A feature
+that spans repositories (for example an API and a frontend) uses one spec and one
+epic, with a story per repository.
 
 ## What is in it
 
-| Skill                        | Command                               | What it does                                                                                                                                          |
-| ---------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `onboard-project`            | `/feature-flow:onboard-project [KEY]` | Detects a repository's commands and structure, writes the **Automation profile** in its `CLAUDE.md`, and reports what is missing (tests, CI, access). |
-| `build-feature`              | `/feature-flow:build-feature <KEY>`   | Runs the full flow for one ticket and stops at a pull request for a person to review. Never merges.                                                   |
-| `archify` (plugin `archify`) | used by the two skills above          | Draws and checks the diagrams. A reviewed, pinned copy of [Archify](https://github.com/tt-a1i/archify) 3.3.0, commit `3ca198d`.                       |
+| Skill                        | Command                                         | What it does                                                                                                                                                                                                                                    |
+| ---------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onboard-project`            | `/feature-flow:onboard-project [KEY]`           | Detects a repository's commands and structure, writes the **Automation profile** in its `CLAUDE.md`, and reports what is missing (tests, CI, access).                                                                                           |
+| `build-feature`              | `/feature-flow:build-feature <KEY>`             | Runs the full flow for one ticket and stops at a pull request for a person to review. Never merges.                                                                                                                                             |
+| `write-spec`                 | `/feature-flow:write-spec <file, link or text>` | Reads a feature request and the onboarded repositories (what exists, what is missing) and publishes a spec page to Confluence as a **Draft**: requirements, design, phases, open questions. Run it again on the page to revise it after review. |
+| `create-tickets`             | `/feature-flow:create-tickets <page>`           | For an **Approved** spec: plans one Jira epic and stories (one repository each, numbered acceptance criteria, dependencies), shows the plan, then creates them and links them on the page.                                                      |
+| `archify` (plugin `archify`) | used by the two skills above                    | Draws and checks the diagrams. A reviewed, pinned copy of [Archify](https://github.com/tt-a1i/archify) 3.3.0, commit `3ca198d`.                                                                                                                 |
 
+The spec template is in `plugins/feature-flow/skills/write-spec/templates/spec.md`.
 Templates in `plugins/feature-flow/skills/build-feature/templates/`: ticket,
 pull request body, ticket comment, run log. `onboard-project/templates/build-diagrams.mjs`
 is copied into each project to build all diagrams on any OS into
 `flowdiagram.html`.
 
-Both feature-flow skills only run when a person types the command (`disable-model-invocation`).
+All feature-flow skills only run when a person types the command (`disable-model-invocation`).
 
 ## Diagrams with Archify (local only)
 
@@ -81,7 +100,9 @@ Example profile (a Node.js + React app with MongoDB):
 ## Automation profile
 
 - Tracker: Jira, site example.atlassian.net, project APP
+- Docs: Confluence, site example.atlassian.net, space APP, parent page Specs
 - Repository: github.com/your-org/your-repo, base branch main
+- Related repos: ../your-api (backend this app calls)
 - Branches: feature/APP-<n>-<slug>, fix/APP-<n>-<slug>, docs/<slug>
 - Install: `npm ci`
 - Run: `npm run dev` (check at http://127.0.0.1:5173); needs: MongoDB and backend/.env

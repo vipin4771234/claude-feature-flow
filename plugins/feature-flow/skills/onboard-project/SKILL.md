@@ -39,6 +39,12 @@ some machines, keep the normal command and list the workaround under
 Ask the user for the tracker site and project key (use the argument if given:
 $ARGUMENTS). Read one ticket with the tracker connector to confirm access.
 
+Also ask where specs live (Confluence space and parent page, used by
+`/feature-flow:write-spec`) and whether the feature spans other repositories
+(for example a separate API or frontend). Record them as **Docs** and **Related
+repos**; read the parent page to confirm access. Related repositories are
+onboarded separately, each with its own profile pointing back here.
+
 ## 3. Write the profile
 
 Add or update this section in `CLAUDE.md`, keeping everything else in the file:
@@ -47,7 +53,9 @@ Add or update this section in `CLAUDE.md`, keeping everything else in the file:
 ## Automation profile
 
 - Tracker: Jira, site <site>.atlassian.net, project <KEY>
+- Docs: Confluence, site <site>.atlassian.net, space <SPACE>, parent page <title or ID>, or "none"
 - Repository: <host>/<owner>/<repo>, base branch <main>
+- Related repos: <../other-repo (what it is)>, or "none"
 - Branches: feature/<KEY>-<n>-<slug>, fix/<KEY>-<n>-<slug>, docs/<slug>
 - Install: <command>
 - Run: <command> (check at <URL>); needs: <services and how to start them>
@@ -141,6 +149,7 @@ Show a checklist with what is ready and what is missing:
 - [ ] CI runs tests on pull requests
 - [ ] Base branch is protected
 - [ ] Tracker connector can read and comment on tickets
+- [ ] Confluence space for specs is reachable (or `Docs: none`)
 - [ ] Git host CLI is signed in with push access to branches
 - [ ] Local services start with documented commands
 - [ ] archify plugin installed; baseline diagrams created (or `Diagrams: none`)

@@ -37,6 +37,12 @@ requirements and **numbered, testable acceptance criteria** (see
   silently.
 - If the ticket is assigned to someone else or other open tickets cover the same
   work, stop and ask: someone may already be building it.
+- If the ticket came from a spec (label `spec-<page id>` or a link to a
+  `feature-flow-spec` page), read that page for the design, rules and open-question
+  answers, and follow them. If the ticket is **blocked by** another ticket that is
+  not merged yet (for example the API story), stop and say so.
+- If the ticket is labelled for another repository (`repo-<name>`), stop: it
+  belongs in that repository's session.
 - Move the ticket to In Progress (or the profile's equivalent status).
 
 ## 2. Design

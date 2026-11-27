@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "feature-flow",
-      "description": "Ticket to pull request with Claude Code: /feature-flow:onboard-project sets up a repository, /feature-flow:build-feature <KEY> builds one ticket.",
+      "description": "Feature request to pull requests with Claude Code: /feature-flow:onboard-project sets up a repository, /feature-flow:write-spec writes a Confluence spec, /feature-flow:create-tickets makes Jira tickets from it, /feature-flow:build-feature <KEY> builds one ticket.",
       "source": "./plugins/feature-flow",
       "category": "development"
     },

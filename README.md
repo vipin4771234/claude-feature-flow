@@ -5,7 +5,7 @@ review: design, branch, build, tests, manual check in the running app, diagrams,
 pull request and ticket update. It is the reusable version of the process proven
 on a proof-of-concept project (a Node.js + React task manager).
 
-> Status: **draft 0.4.0**. Proven end to end on one Node.js + React project; not yet tested on a second project.
+> Status: **draft 0.4.0**. Proven end to end on Node.js + React project;
 
 ## What is in it
 
